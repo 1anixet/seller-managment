@@ -121,18 +121,18 @@ const Billing: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
                 {/* Items list */}
-                <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
-                    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="lg:col-span-2 glass-card rounded-2xl overflow-hidden flex flex-col border-0">
+                    <div className="p-4 border-b border-white/20 dark:border-white/10 glass">
                         <input
                             type="text"
                             placeholder="Search items by name, SKU, or barcode..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-2 bg-white/50 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-primary-500 dark:text-white backdrop-blur-sm transition-all"
                         />
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-4">
+                    <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
                         {loading ? (
                             <div className="flex justify-center items-center h-full">
                                 <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
@@ -144,7 +144,7 @@ const Billing: React.FC = () => {
                                         key={item._id}
                                         onClick={() => addToCart(item)}
                                         disabled={item.stock.quantity === 0}
-                                        className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 transition-colors text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="p-3 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/5 rounded-xl hover:bg-white/60 dark:hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                     >
                                         <p className="font-medium text-gray-900 dark:text-white text-sm truncate">
                                             {item.name}
@@ -163,11 +163,11 @@ const Billing: React.FC = () => {
                 </div>
 
                 {/* Cart */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
-                    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="glass-card rounded-2xl overflow-hidden flex flex-col border-0">
+                    <div className="p-4 border-b border-white/20 dark:border-white/10 glass bg-primary-500/10 dark:bg-primary-900/20">
                         <div className="flex items-center">
-                            <ShoppingCart className="w-5 h-5 text-primary-600 mr-2" />
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            <ShoppingCart className="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                                 Cart ({cart.length})
                             </h2>
                         </div>
@@ -248,8 +248,8 @@ const Billing: React.FC = () => {
                                         key={method}
                                         onClick={() => setPaymentMethod(method)}
                                         className={`py-2 px-3 border rounded-lg text-sm font-medium capitalize transition-colors ${paymentMethod === method
-                                                ? 'bg-primary-600 text-white border-primary-600'
-                                                : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-500'
+                                            ? 'bg-primary-600 text-white border-primary-600'
+                                            : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-500'
                                             }`}
                                     >
                                         {method}

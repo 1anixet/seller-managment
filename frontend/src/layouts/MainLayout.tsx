@@ -48,16 +48,16 @@ const MainLayout: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+        <div className="min-h-screen bg-transparent transition-colors">
             {/* Sidebar */}
             <div
-                className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed inset-y-0 left-0 z-50 w-64 glass-panel border-r-0 transform transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     } lg:translate-x-0`}
             >
-                <div className="flex flex-col h-full">
+                <div className="flex flex-col h-full bg-white/40 dark:bg-gray-900/40 backdrop-blur-md">
                     {/* Logo */}
-                    <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
-                        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                    <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200/30 dark:border-gray-700/30">
+                        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400 dark:from-primary-400 dark:to-primary-200">
                             Seller Platform
                         </h1>
                         <button
@@ -78,12 +78,12 @@ const MainLayout: React.FC = () => {
                                     <Link
                                         key={item.name}
                                         to={item.href}
-                                        className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${active
-                                                ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                                                : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                                        className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${active
+                                            ? 'bg-primary-500/10 text-primary-600 dark:text-primary-400 shadow-[0_0_15px_rgba(99,102,241,0.3)] backdrop-blur-sm border border-primary-500/20'
+                                            : 'text-gray-700 hover:bg-white/50 dark:text-gray-300 dark:hover:bg-gray-800/50 hover:shadow-sm'
                                             }`}
                                     >
-                                        <Icon className="w-5 h-5 mr-3" />
+                                        <Icon className={`w-5 h-5 mr-3 transition-transform duration-200 ${active ? 'scale-110' : ''}`} />
                                         {item.name}
                                     </Link>
                                 );
@@ -92,10 +92,10 @@ const MainLayout: React.FC = () => {
                     </nav>
 
                     {/* User profile */}
-                    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                    <div className="p-4 border-t border-gray-200/30 dark:border-gray-700/30 bg-white/20 dark:bg-black/20">
                         <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center">
-                                <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/50 dark:to-primary-800/50 flex items-center justify-center shadow-inner">
                                     <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                                 </div>
                                 <div className="ml-3">
@@ -111,7 +111,7 @@ const MainLayout: React.FC = () => {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => dispatch(toggleTheme())}
-                                className="flex-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                className="flex-1 px-3 py-2 text-sm font-medium text-gray-700 bg-white/50 rounded-lg hover:bg-white/80 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-800/80 transition-all shadow-sm hover:shadow"
                             >
                                 {theme === 'light' ? (
                                     <Moon className="w-4 h-4 mx-auto" />
@@ -121,7 +121,7 @@ const MainLayout: React.FC = () => {
                             </button>
                             <button
                                 onClick={handleLogout}
-                                className="flex-1 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center"
+                                className="flex-1 px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/30 flex items-center justify-center"
                             >
                                 <LogOut className="w-4 h-4 mr-2" />
                                 Logout
@@ -132,9 +132,9 @@ const MainLayout: React.FC = () => {
             </div>
 
             {/* Main content */}
-            <div className={`transition-all duration-200 ${sidebarOpen ? 'lg:pl-64' : 'pl-0'}`}>
+            <div className={`transition-all duration-300 cubic-bezier(0.4, 0, 0.2, 1) ${sidebarOpen ? 'lg:pl-64' : 'pl-0'}`}>
                 {/* Top bar */}
-                <div className="sticky top-0 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <div className="sticky top-0 z-40 glass border-b-0 shadow-sm">
                     <div className="flex items-center justify-between h-16 px-4 sm:px-6">
                         <button
                             onClick={() => setSidebarOpen(!sidebarOpen)}
