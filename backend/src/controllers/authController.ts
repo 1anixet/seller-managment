@@ -138,6 +138,63 @@ export const login = async (
     }
 };
 
+export const refreshToken = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { refreshToken } = req.body;
+
+        if (!refreshToken) {
+            res.status(400).json({
+                success: false,
+                message: 'Refresh token is required',
+            });
+            return;
+        }
+
+        // Verify refresh token
+        const { verifyRefreshToken } = require('../utils/auth');
+        let decoded;
+
+        try {
+            decoded = verifyRefreshToken(refreshToken);
+        } catch (error) {
+            res.status(401).json({
+                success: false,
+                message: 'Invalid or expired refresh token',
+            });
+            return;
+        }
+
+        // Get user
+        const user = await User.findById(decoded.userId);
+        if (!user || !user.isActive) {
+            res.status(401).json({
+                success: false,
+                message: 'User not found or inactive',
+            });
+            return;
+        }
+
+        // Generate new tokens
+        const newAccessToken = generateAccessToken(user._id.toString());
+        const newRefreshToken = generateRefreshToken(user._id.toString());
+
+        res.status(200).json({
+            success: true,
+            message: 'Token refreshed successfully',
+            data: {
+                accessToken: newAccessToken,
+                refreshToken: newRefreshToken,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const getMe = async (
     req: AuthRequest,
     res: Response,

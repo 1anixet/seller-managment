@@ -19,7 +19,7 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle errors
+// Response interceptor to handle errors and refresh tokens
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -31,12 +31,38 @@ api.interceptors.response.use(
 
             try {
                 const refreshToken = localStorage.getItem('refreshToken');
-                // Add refresh token endpoint when implemented
-                // For now, just redirect to login
+
+                if (!refreshToken) {
+                    // No refresh token available, logout
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    window.location.href = '/login';
+                    return Promise.reject(error);
+                }
+
+                // Call refresh endpoint to get new access token
+                const response = await axios.post('/api/auth/refresh', {
+                    refreshToken,
+                });
+
+                const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.data;
+
+                // Update tokens in localStorage
+                localStorage.setItem('accessToken', newAccessToken);
+                if (newRefreshToken) {
+                    localStorage.setItem('refreshToken', newRefreshToken);
+                }
+
+                // Update the authorization header with new token
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+                // Retry the original request with new token
+                return api(originalRequest);
+            } catch (refreshError) {
+                // Refresh failed, logout user
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
                 window.location.href = '/login';
-            } catch (refreshError) {
                 return Promise.reject(refreshError);
             }
         }
